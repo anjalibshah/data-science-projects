@@ -1,0 +1,10 @@
+<!-- Fill in details for hostname, username, password and database name in respective fields below-->
+
+<config>
+    <mysql>
+        <host> </host>
+        <user> </user>
+        <passwd> </passwd>
+        <db> </db>
+    </mysql>
+</config>
