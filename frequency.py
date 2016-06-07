@@ -47,7 +47,6 @@ def get_term_freq():
     Parse through all tweets and sum up the total number of words in all tweets
     as well as the total number of times each word appears in all tweets combines
     Use the above two pieces of information to get frequency of each word across all tweets
-    
     """
     
     total_freq = {}
