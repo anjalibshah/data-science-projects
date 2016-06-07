@@ -70,7 +70,6 @@ states = {
         'WY': 'Wyoming'
 }
 
-
 def lines(fp):
     print str(len(fp.readlines()))
     
