@@ -1,0 +1,78 @@
+
+-- Simple select query
+------------------------------------------------------------
+select count(*) from frequency where docid = '10398_txt_earn';
+
+
+-- Select project query
+------------------------------------------------------------
+select count(*) from (select term from frequency where docid = '10398_txt_earn' group by term having count=1);
+
+
+-- Union query
+------------------------------------------------------------
+select count(*) from 
+(select term from 
+(select term from frequency where docid = '10398_txt_earn' group by term having count=1) 
+union 
+select term from 
+(select term from frequency where docid = '925_txt_trade' group by term having count=1));
+
+
+-- County query
+------------------------------------------------------------
+select count(*) from(select docid from (select docid from frequency where term = 'law' union
+select docid from frequency where term = 'legal') combined
+group by docid having count(docid) = 1);
+
+
+-- Find all documents containing more than 300 words 
+-- include duplicate terms
+------------------------------------------------------------
+select count(docid) from (select count(term), docid from frequency group by docid having count(term)>300);
+
+
+-- Find all unique documents containing following terms
+-- "transactions world"
+------------------------------------------------------------
+select count(*) from (select docid from (select docid, term, count from frequency where term = 'transactions' group by docid, term, count having count(term) > 0)
+intersect
+select docid from (select docid, term, count from frequency where term = 'world' group by docid, term, count having count(term) > 0));
+
+
+-- Matrix multiplication in SQL
+------------------------------------------------------------
+select value from
+(select A.row_num, B.col_num, sum(A.value * B.value) as value
+from A, B
+where A.col_num = B.row_num group by A.row_num, B.col_num) multiplied
+where multiplied.row_num = 2 and multiplied.col_num=3;
+
+
+-- Compute term-document similarity matrix
+------------------------------------------------------------
+select value from
+(select A.docid, B.docid, sum(A.count * B.count) as value
+from frequency as A, frequency as B
+where A.term = B.term and A.docid <> B.docid and A.docid = '10080_txt_crude' and B.docid = '17035_txt_earn'
+group by A.docid, B.docid);
+
+
+-- Find the best matching document to the keyword query
+-- "washington taxes treasury".
+------------------------------------------------------------
+select max(similarity) from 
+(SELECT b.docid, b.term, SUM(a.count * b.count) as similarity
+FROM (SELECT * FROM Frequency
+      UNION
+      SELECT  'q' as docid, 'congress' as term, 1 as count 
+      UNION
+      SELECT  'q' as docid, 'gun' as term, 1 as count
+      UNION 
+      SELECT  'q' as docid, 'laws' as term, 1 as count 
+     ) a, Frequency b
+WHERE a.term = b.term 
+and a.term in ('washington','taxes','treasury')
+AND a.docid = 'q'
+GROUP BY b.docid, b.term
+ORDER BY similarity desc);
