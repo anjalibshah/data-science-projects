@@ -90,7 +90,6 @@ def message_count_by_user(df_users, df_messages, threshold_num_messages=200):
     
 print 'Question 1: %d' %message_count_by_user(df_users, df_messages)
 
-
 # Question 2: Our client has told us that there are 5 different types of users that visit their website. 
 # Using the features provided for each user in user_features.csv, write a function that identifies the 5 different group of users. 
 # Report the mean of the total number of messages each group has received since signing up on the client's website. 
