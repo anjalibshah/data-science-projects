@@ -96,7 +96,6 @@ def get_non_sentiment_score():
     for key, value in non_sentiment_score.items():
         print "%s %.2f" % (key, value)
             
-
 def main():
     get_non_sentiment_score()
 
