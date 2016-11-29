@@ -1,2 +1,2 @@
 # Data-science-projects
-Source code for Insight data science consulting projects
+Source code for data science consulting projects
